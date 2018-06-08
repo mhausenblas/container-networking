@@ -42,3 +42,12 @@ $ [root@354e1e47323c /]# ifconfig
 $ docker run -d -P --name=webserver --net=none nginx:1.9
 $ docker inspect webserver | grep IPAddress
 ```
+
+## Custom network
+
+https://katacoda.com/courses/docker/networking-intro
+
+
+## Multi-host
+
+https://katacoda.com/courses/weave/hello-net
