@@ -37,8 +37,8 @@ $ iptables -P FORWARD DROP && iptables -F FORWARD && iptables -t nat -F
 $ iptables -t nat -A POSTROUTING -s 10.200.1.0/255.255.255.0 -o ens3 -j MASQUERADE
 $ iptables -A FORWARD -i ens3 -o east0 -j ACCEPT
 $ iptables -A FORWARD -o ens3 -i east0 -j ACCEPT
+$ ip netns exec east ip route sh
 ```
-
 
 Let's launch a very, very simple webserver in the `east` namespace:
 
@@ -66,7 +66,7 @@ $ ip netns exec east ip addr
     inet6 fe80::e8dd:40ff:fe79:95bf/64 scope link
        valid_lft forever preferred_lft forever
 $ curl 10.200.1.2
-hello
+I am serving from the East
 ```
 
 But not from `west` …
