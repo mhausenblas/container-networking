@@ -4,6 +4,8 @@
 
 Using [this Katacoda playground](https://www.katacoda.com/mhausenblas/scenarios/container-networking).
 
+Basics, setting up two Linux network namespaces:
+
 ```bash
 $ ip netns add east
 $ ip netns add west
@@ -11,7 +13,63 @@ $ ip netns ls
 $ ip netns exec east ip addr
 $ ip netns exec east ip link set lo up
 $ ip netns exec east ip addr
+$ ip netns exec west ip route show
 ```
+
+Enable network access to host:
+
+```bash
+$ ip link add east0 type veth peer name east1
+$ ip link set east1 netns east up
+$ ip addr add 10.200.1.1/24 dev east0
+$ ip link set east0 up
+$ ip netns exec east ip addr add 10.200.1.2/24 dev east1
+$ ip netns exec east ip link set east1 up
+$ ip netns exec east ip link set lo up
+$ ip netns exec east ip route add default via 10.200.1.1
+```
+
+Share access between host and NS:
+
+```
+$ echo 1 > /proc/sys/net/ipv4/ip_forward
+$ iptables -P FORWARD DROP && iptables -F FORWARD && iptables -t nat -F
+$ iptables -t nat -A POSTROUTING -s 10.200.1.0/255.255.255.0 -o ens3 -j MASQUERADE
+$ iptables -A FORWARD -i ens3 -o east0 -j ACCEPT
+$ iptables -A FORWARD -o ens3 -i east0 -j ACCEPT
+```
+
+
+Let's launch a very, very simple webserver in the `east` namespace:
+
+```bash
+$ echo "I am serving from the East" > index.html
+$ echo "while true ; do nc -l 80 < index.html ; done" > webserver.sh
+$ chmod 750 webserver.sh
+$ ip netns exec east ./webserver.sh
+```
+
+Now we can query it from the `root` namespace:
+
+```bash
+$ ip netns exec east ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+4: east1@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether ea:dd:40:79:95:bf brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.200.1.2/24 scope global east1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::e8dd:40ff:fe79:95bf/64 scope link
+       valid_lft forever preferred_lft forever
+$ curl 10.200.1.2
+hello
+```
+
+But not from `west` …
 
 And explore via [cinf](https://github.com/mhausenblas/cinf).
 
