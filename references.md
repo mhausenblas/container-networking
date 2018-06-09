@@ -5,10 +5,11 @@
 - [Network Protocols](https://www.destroyallsoftware.com/compendium/network-protocols?share_key=97d3ba4c24d21147) Programmer's Compendium
 - [Demystifying container networking](http://blog.mbrt.it/2017-10-01-demystifying-container-networking/) by Michele Bertasi
 - [An Empirical Study of Load Balancing Algorithms](http://liblb.com/learn.html)
+- Linux man page: [ip](https://linux.die.net/man/8/ip) command
 
 ## Linux kernel
 
-- [Network namespaces](https://lwn.net/Articles/219794/)
+- LWN: [Namespaces in operation, part 7: Network namespaces](https://lwn.net/Articles/580893/)
 - [Network classifier cgroup](https://www.kernel.org/doc/Documentation/cgroup-v1/net_cls.txt)
 - [Networking in Containers and Container Clusters](http://wiki.iptables.org/pablo/netdev0.1/papers/Networking-in-Containers-and-Container-Clusters.pdf)
 - [Anatomy of a Container: Namespaces, cgroups & Some Filesystem Magic - LinuxCon](https://www.slideshare.net/jpetazzo/anatomy-of-a-container-namespaces-cgroups-some-filesystem-magic-linuxcon)
