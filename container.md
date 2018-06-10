@@ -1,6 +1,10 @@
 # Container networking basics
 
-## Namespaces and cgroups
+- [Linux namespaces and cgroups](#linux-namespaces-and-cgroups)
+- [Single host](#single-host)
+- [Multi-host](#multi-host)
+
+## Linux namespaces and cgroups
 
 Using [this Katacoda playground](https://www.katacoda.com/mhausenblas/scenarios/container-networking).
 
@@ -70,6 +74,9 @@ I am serving from the East
 ```
 
 But not from `west` …
+
+Also, stats: `ip netns exec east netstat -i`
+
 
 And explore via [cinf](https://github.com/mhausenblas/cinf).
 

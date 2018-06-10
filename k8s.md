@@ -1,5 +1,10 @@
 # Kubernetes networking
 
+- [Intra-pod networking](#intra-pod-networking)
+- [Inter-pod networking](#inter-pod-networking)
+- [Ingress and egress](#ingress-and-egress)
+- [Tooling](#tooling)
+
 ## Intra-pod networking
 
 Two containers in a pod
@@ -15,6 +20,6 @@ Ingress
 https://katacoda.com/courses/kubernetes/create-kubernetes-ingress-routes
 
 
-## Scope
+## Tooling
 
 https://katacoda.com/courses/weave/installing-weave-scope-on-kubernetes
