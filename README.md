@@ -14,4 +14,4 @@ An [in-person training](https://conferences.oreilly.com/velocity/vl-ca/public/sc
   - Inter-pod networking
   - Ingress and egress
 
-Further reading, tools and videos are available via the [references](references.md) section.
+Further reading, tools and videos are available via the [references](references.md) section here as well as via the [container networking references](http://mhausenblas.info/cn-ref/) site.
