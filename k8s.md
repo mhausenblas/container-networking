@@ -2,7 +2,7 @@
 
 - [Intra-pod networking](#intra-pod-networking)
 - [Inter-pod networking](#inter-pod-networking)
-- [Ingress and egress](#ingress-and-egress)
+- [Ingress](#ingress)
 
 ## Intra-pod networking
 
@@ -26,6 +26,6 @@ $ kubectl exec somepod -it -c=shell bash
 
 Using [this Katacoda scenario](https://katacoda.com/courses/kubernetes/networking-introduction) you will create Kubernetes services of type "ClusterIP", "Target Ports", "NodePort", "External IPs" as well as "Load Balancer" and explore them.
 
-## Ingress and egress
+## Ingress
 
 Using [this Katacoda scenario](https://katacoda.com/courses/kubernetes/create-kubernetes-ingress-routes) you will deploy an Ingress controller and an Ingress resource that you'll be using to route traffic from the outside world to different services.
