@@ -3,7 +3,6 @@
 - [Intra-pod networking](#intra-pod-networking)
 - [Inter-pod networking](#inter-pod-networking)
 - [Ingress and egress](#ingress-and-egress)
-- [Tooling](#tooling)
 
 ## Intra-pod networking
 
@@ -30,12 +29,3 @@ Using [this Katacoda scenario](https://katacoda.com/courses/kubernetes/networkin
 ## Ingress and egress
 
 Using [this Katacoda scenario](https://katacoda.com/courses/kubernetes/create-kubernetes-ingress-routes) you will deploy an Ingress controller and an Ingress resource that you'll be using to route traffic from the outside world to different services.
-
-
-## Tooling
-
-Bonus (time permitting).
-
-Using [this Katacoda scenario](https://katacoda.com/courses/weave/installing-weave-scope-on-kubernetes) you will deploy Weave Scope, allowing you to visualize containers running in a Kubernetes cluster as well as communication between them.
-
-
