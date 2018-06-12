@@ -6,9 +6,9 @@
 
 ## Linux namespaces and cgroups
 
-Using [this Katacoda playground](https://www.katacoda.com/mhausenblas/scenarios/container-networking).
+Using [this Katacoda playground](https://www.katacoda.com/mhausenblas/scenarios/container-networking) you will create two network namespaces and set up a communication policy.
 
-Basics, setting up two Linux network namespaces:
+First, create the two Linux network namespaces `east` and `west` and explore them:
 
 ```bash
 $ ip netns add east
@@ -20,7 +20,7 @@ $ ip netns exec east ip addr
 $ ip netns exec west ip route show
 ```
 
-Enable network access to host:
+Now, configure the namespace `east`:
 
 ```bash
 $ ip link add east0 type veth peer name east1
@@ -33,9 +33,9 @@ $ ip netns exec east ip link set lo up
 $ ip netns exec east ip route add default via 10.200.1.1
 ```
 
-Share access between host and NS:
+Now enable network access from the `east` namespace to the host (root namespace):
 
-```
+```bash
 $ echo 1 > /proc/sys/net/ipv4/ip_forward
 $ iptables -P FORWARD DROP && iptables -F FORWARD && iptables -t nat -F
 $ iptables -t nat -A POSTROUTING -s 10.200.1.0/255.255.255.0 -o ens3 -j MASQUERADE
@@ -44,7 +44,7 @@ $ iptables -A FORWARD -o ens3 -i east0 -j ACCEPT
 $ ip netns exec east ip route sh
 ```
 
-Let's launch a very, very simple webserver in the `east` namespace:
+Next, let's launch a very simple webserver in the `east` namespace:
 
 ```bash
 $ echo "I am serving from the East" > index.html
@@ -73,23 +73,30 @@ $ curl 10.200.1.2
 I am serving from the East
 ```
 
-But not from `west` …
+You can now access the webserver from the host, but not from the `west` namespace. Let's verify this:
 
-Also, stats: `ip netns exec east netstat -i`
+```bash
+$ ip netns exec west curl 10.200.1.2
+```
 
+Bonus:
 
-And explore via [cinf](https://github.com/mhausenblas/cinf).
+- Check network stats with `ip netns exec east netstat -i`.
+- Explore namespace using [cinf](https://github.com/mhausenblas/cinf).
 
 ## Single host
 
-Using [this Katacoda playground](https://katacoda.com/courses/docker/playground).
+For all below exercise you'll be ssing [this Katacoda playground](https://katacoda.com/courses/docker/playground).
 
+Check what is there by default:
 
 ```bash
 $ docker network list
 ```
 
 ### Bridge mode
+
+Create a container running a webserver using bridge mode and query it from another container:
 
 ```bash
 $ docker run -d -P --name=webserver --net=bridge nginx:1.9
@@ -104,12 +111,17 @@ $ docker kill webserver && docker rm webserver && docker rm shell
 
 ### Host mode
 
+Create a container running a webserver using host mode and query it:
+
 ```bash
 $ docker run -d --name=webserver --net=host nginx:1.9
 $ curl docker:80
+$ docker kill webserver && docker rm webserver
 ```
 
 ### Container mode
+
+Create a container running a webserver and re-use the network in another container:
 
 ```bash
 $ docker run -d --name=webserver nginx:1.9 
@@ -117,9 +129,12 @@ $ docker inspect webserver | grep IPAddress
 $ docker run -it --name=shell --net=container:webserver centos:7 
 $ [root@354e1e47323c /]# yum install iproute -y
 $ [root@354e1e47323c /]# ip addr show
+$ docker kill webserver && docker rm webserver && docker rm shell
 ```
 
 ### No networking
+
+Verify that if no networking is specified, we indeed have no connectivity:
 
 ```bash
 $ docker run -d -P --name=webserver --net=none nginx:1.9
@@ -128,9 +143,9 @@ $ docker inspect webserver | grep IPAddress
 
 ### Custom network
 
-https://katacoda.com/courses/docker/networking-intro
+Using [this Katacoda scenario](https://katacoda.com/courses/docker/networking-intro) you will create a custom single-host container network and perform several actions in it.
 
 
 ## Multi-host
 
-https://katacoda.com/courses/weave/hello-net
+Using [this Katacoda scenario](https://katacoda.com/courses/weave/hello-net) you will create a multi-host container network with [Weave Net](https://github.com/weaveworks/weave/).
