@@ -86,7 +86,7 @@ Bonus:
 
 ## Single host
 
-For all below exercise you'll be ssing [this Katacoda playground](https://katacoda.com/courses/docker/playground).
+For all below (single host) exercises you'll be using [this Katacoda playground](https://katacoda.com/courses/docker/playground).
 
 Check what is there by default:
 
